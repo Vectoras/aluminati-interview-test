@@ -1,3 +1,9 @@
+# Solution
+
+- as per specifications, corrected numbers going from 1 to `limit` instead of 0 to `limit`-1
+- the specifications do not mention anything about highlithing the given number, only it's divisors -> implemented as such
+- converted vanilla JS code to Vue.Js
+
 # Changes
 
 1. Replaced the `limit` with a required prop instead of accessing it through the parent instance

@@ -1,15 +1,15 @@
 <template>
   <div>
     <div
-      v-for="number in numbers"
-      :key="number.value"
+      v-for="{ value, isActive } in numbers"
+      :key="value"
       class="number"
-      :class="{ active: number.isActive }"
-      :id="'number-' + number.value"
-      @mouseenter="hov(number.value)"
+      :class="{ active: isActive }"
+      :id="'number-' + value"
+      @mouseenter="hov(value)"
       @mouseleave="reset"
     >
-      {{ number.value }}
+      {{ value }}
     </div>
   </div>
 </template>
