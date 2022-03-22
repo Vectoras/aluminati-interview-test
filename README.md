@@ -1,6 +1,6 @@
 # Changes
 
-1. Replaced the limit with a required prop instead of accessing it through the parent instance
+1. Replaced the `limit` with a required prop instead of accessing it through the parent instance
 
    - less code
    - better predictability
