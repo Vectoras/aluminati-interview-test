@@ -1,68 +1,71 @@
 <template>
   <div>
-    <div class="number" :id="'number-'+number" v-for="number in n()" :key="number" @mouseover="hov(number)" @mouseout="reset">
-      {{number}}
+    <div
+      v-for="number in numbers"
+      :key="number.value"
+      class="number"
+      :class="{ active: number.isActive }"
+      :id="'number-' + number.value"
+      @mouseenter="hov(number.value)"
+      @mouseleave="reset"
+    >
+      {{ number.value }}
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  data()
-  {
+  name: "AppNumbers",
+  data() {
     return {
-      limit: this.$parent.limit,
       numbers: []
+    };
+  },
+  props: {
+    limit: {
+      required: true
     }
   },
   watch: {
-    ['$parent.limit'](newLimit)
-    {
-      this.limit = newLimit;
+    limit: {
+      handler(newLimit) {
+        let numbers = [];
+        for (let i = 1; i <= newLimit; i++) {
+          numbers.push({ value: i, isActive: false });
+        }
+
+        this.numbers = numbers.sort(() => Math.random() - 0.5);
+      },
+      immediate: true
     }
   },
   methods: {
-    n()
-    {
-      let numbers = [];
-      for(var i = 0; i < this.limit; i++)
-      {
-        numbers = [...numbers, i];
-      }
-      return numbers.sort(() => Math.random() - 0.5);
+    hov(refValue) {
+      this.numbers.forEach((number, index, array) => {
+        if (number.value != refValue && refValue % number.value == 0)
+          array.splice(index, 1, { value: number.value, isActive: true });
+      });
     },
-    hov(number)
-    {
-      const nums = document.querySelectorAll('.number');
-
-      for(let i = 0; i < nums.length; i++)
-      {
-        const num = nums[i].textContent.trim();
-        if(number % num === 0)
-        {
-          nums[i].classList.add('active')
-          console.log('divisor', num)
-        }
-      }
-    },
-    reset()
-    {
-      const nums = document.querySelectorAll('.number');
-      nums.forEach(num => num.classList.remove('active'))
+    reset() {
+      this.numbers.forEach((number, index, array) => {
+        array.splice(index, 1, { value: number.value, isActive: false });
+      });
     }
   }
-}
+};
 </script>
 
 <style scoped>
-	.number {
-		display: inline-block;
-		padding: 5px;
-		background-color: lightgrey;
-		margin: 5px;
-	}
+.number {
+  display: inline-block;
+  padding: 5px;
+  background-color: lightgrey;
+  margin: 5px;
+  cursor: help;
+}
 
-	.active {
-		background-color: red;
-	}
+.active {
+  background-color: red;
+}
 </style>
